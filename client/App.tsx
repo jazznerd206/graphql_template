@@ -11,7 +11,7 @@ function App() {
     
     return (
         <div>
-            {loaded == false && <div>that</div>}
+            {loaded == false && <div>that one</div>}
             {loaded == true && <div>this</div>}
         </div>
     )
