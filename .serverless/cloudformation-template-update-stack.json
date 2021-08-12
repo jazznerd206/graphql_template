@@ -161,13 +161,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/graphql-template/prod/1628715998972-2021-08-11T21:06:38.972Z/graphql-template.zip"
+          "S3Key": "serverless/graphql-template/prod/1628784781522-2021-08-12T16:13:01.522Z/graphql-template.zip"
         },
         "Handler": "src/sls.graphqlHandler",
         "Runtime": "nodejs12.x",
         "FunctionName": "graphql-template-prod-graphql",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "DATABASE_URL": "mongodb+srv://gql:weloveGQL@cluster0.nhukt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -179,14 +184,14 @@
         "GraphqlLogGroup"
       ]
     },
-    "GraphqlLambdaVersionDCZfcL3UJjlUFAWQxylP1zawxx3GqORzKvWwssyjA": {
+    "GraphqlLambdaVersionsZ3J9l4RqS1oKcn9zJSgliXS6zGqY9Hg0Nh4mk3BYKQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GraphqlLambdaFunction"
         },
-        "CodeSha256": "tiamDHRlr3oghH1SpPWuQNEnlzPZh7cWsnI46x1YQuI="
+        "CodeSha256": "WkcqkvdbUsT50SaiWhcoc9gVTw6C+vED5QqY1I22nDk="
       }
     },
     "ApiGatewayRestApi": {
@@ -353,7 +358,7 @@
         "GraphqlLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1628715990775": {
+    "ApiGatewayDeployment1628784772822": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -417,7 +422,7 @@
     "GraphqlLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GraphqlLambdaVersionDCZfcL3UJjlUFAWQxylP1zawxx3GqORzKvWwssyjA"
+        "Ref": "GraphqlLambdaVersionsZ3J9l4RqS1oKcn9zJSgliXS6zGqY9Hg0Nh4mk3BYKQ"
       },
       "Export": {
         "Name": "sls-graphql-template-prod-GraphqlLambdaFunctionQualifiedArn"

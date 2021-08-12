@@ -1,26 +1,50 @@
-const nodeExternals = require('webpack-node-externals');
-const serverlessWebpack = require('serverless-webpack');
+const path = require("path");
+const slsw = require("serverless-webpack");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
-  devtool: 'inline-cheap-module-source-map',
-  entry: serverlessWebpack.lib.entries,
-  mode: serverlessWebpack.lib.webpack.isLocal ? 'development' : 'production',
+  entry: './src/sls',
+  target: "node",
+  mode: "development",
+  node: {
+    __dirname: true,
+    __filename: true,
+  },
+  optimization: {
+    minimize: false, // We don't need to minimize our Lambda code.
+    moduleIds: "named",
+  },
+  performance: {
+    // Turn off size warnings for entry points
+    hints: false,
+  },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
-        exclude: /node_modules/,
-        test: /\.ts$/,
-        use: 'ts-loader',
+        test: /\.(ts|js)x?$/,
+        exclude: /node_modules/, // we shouldn't need processing `node_modules`
+        use: "babel-loader",
+      },
+      {
+        test: /\.css$/,
+        use: "null-loader", // No server-side CSS processing
+      },
+      {
+        test: /\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$/,
+        use: "url-loader",
       },
     ],
   },
-  node: false,
-  externals: [nodeExternals()],
-  optimization: {
-    minimize: false,
-  },
   resolve: {
-    extensions: ['.ts', '.js'],
+    // TsconfigPathsPlugin applies the path aliases defined in `.tsconfig.json`
+    plugins: [new TsconfigPathsPlugin()],
+    extensions: [ ".tsx", ".ts", ".jsx", ".js"             ],
   },
-  target: 'node',
-};
+  output: {
+    libraryTarget: "commonjs2",
+    path: path.join(__dirname, "./dist"),
+    filename: "[name].js",
+    sourceMapFilename: "[file].map",
+  },
+};  
